@@ -5,7 +5,7 @@ EXPOSE 443
 
 FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /src
-COPY ["BeBlueApi/BeBlueApi.csproj", "BeBlueApi/"]
+COPY ["BeBlueApi.csproj", "BeBlueApi/"]
 RUN dotnet restore "BeBlueApi/BeBlueApi.csproj"
 COPY . .
 WORKDIR "/src/BeBlueApi"
