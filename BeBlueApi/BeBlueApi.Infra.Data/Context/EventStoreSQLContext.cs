@@ -1,19 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BeblueApi.Domain.Core.Events;
+using BeBlueApi.Infra.Data.Mappings;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace BeBlueApi.Infra.Data.Context
 {
-    public class ApplicationDbContext : DbContext
+    public class EventStoreSQLContext : DbContext
     {
-        //public DbSet<Customer> Customers { get; set; }
+        public DbSet<StoredEvent> StoredEvent { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.ApplyConfiguration(new CustomerMap());
+            modelBuilder.ApplyConfiguration(new StoredEventMap());
 
             base.OnModelCreating(modelBuilder);
         }
@@ -26,12 +25,8 @@ namespace BeBlueApi.Infra.Data.Context
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            // define the SQLServer database to use
+            // define the database to use
             optionsBuilder.UseSqlServer(config.GetConnectionString("DefaultConnection"));
-
-            // define the MySQL database to use
-            //optionsBuilder.UseMySql(config.GetConnectionString("MySqlConnection"));
-            //"Server=[SERVIDOR];Port=[PORTA];Database=modelo;Uid=[USUARIO];Pwd=[SENHA]");
         }
     }
 }

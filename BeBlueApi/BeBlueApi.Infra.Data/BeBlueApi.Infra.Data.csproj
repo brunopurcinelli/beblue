@@ -5,14 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Mappings\" />
     <Folder Include="Migrations\" />
-    <Folder Include="UoW\" />
-    <Folder Include="Repository\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BeblueApi.Domain.Core\BeblueApi.Domain.Core.csproj" />
+    <ProjectReference Include="..\BeBlueApi.Domain\BeBlueApi.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

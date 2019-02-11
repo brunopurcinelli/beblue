@@ -1,9 +1,26 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BeblueApi.Domain.Core.Bus;
+using BeblueApi.Domain.Core.Events;
+using BeblueApi.Domain.Core.Notifications;
+using BeblueApi.Infra.CrossCutting.Bus;
+using BeBlueApi.Application.Interfaces;
+using BeBlueApi.Application.Services;
+using BeBlueApi.Domain.CommandHandlers;
+using BeBlueApi.Domain.Commands;
+using BeBlueApi.Domain.Events;
+using BeBlueApi.Domain.EventsHandlers;
+using BeBlueApi.Domain.Interfaces;
+using BeBlueApi.Infra.CrossCutting.Identity.Autorization;
+using BeBlueApi.Infra.CrossCutting.Identity.Models;
+using BeBlueApi.Infra.CrossCutting.Identity.Services;
+using BeBlueApi.Infra.Data.Context;
+using BeBlueApi.Infra.Data.EventSourcing;
+using BeBlueApi.Infra.Data.Repository;
+using BeBlueApi.Infra.Data.Repository.EventSourcing;
+using BeBlueApi.Infra.Data.UoW;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BeBlueApi.Infra.CrossCutting.IoC
 {
@@ -15,35 +32,34 @@ namespace BeBlueApi.Infra.CrossCutting.IoC
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // Domain Bus (Mediator)
-            //services.AddScoped<IMediatorHandler, InMemoryBus>();
+            services.AddScoped<IMediatorHandler, InMemoryBus>();
 
             // ASP.NET Authorization Polices
             services.AddSingleton<IAuthorizationHandler, ClaimsRequirementHandler>();
 
             // Application
-            //services.AddScoped<ICustomerAppService, CustomerAppService>();
+            services.AddScoped<ICashbackAppService, CashbackAppService>();
 
             // Domain - Events
-            //services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
-            //services.AddScoped<INotificationHandler<CustomerRegisteredEvent>, CustomerEventHandler>();
-            //services.AddScoped<INotificationHandler<CustomerUpdatedEvent>, CustomerEventHandler>();
-            //services.AddScoped<INotificationHandler<CustomerRemovedEvent>, CustomerEventHandler>();
+            services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
+            services.AddScoped<INotificationHandler<CashbackRegisteredEvent>, CashbackEventHandler>();
+            services.AddScoped<INotificationHandler<CashbackUpdatedEvent>, CashbackEventHandler>();
+            services.AddScoped<INotificationHandler<CashbackRemovedEvent>, CashbackEventHandler>();
 
             // Domain - Commands
-            //services.AddScoped<IRequestHandler<RegisterNewCustomerCommand>, CustomerCommandHandler>();
-            //services.AddScoped<IRequestHandler<UpdateCustomerCommand>, CustomerCommandHandler>();
-            //services.AddScoped<IRequestHandler<RemoveCustomerCommand>, CustomerCommandHandler>();
+            services.AddScoped<IRequestHandler<RegisterNewCashbackCommand>, CashbackCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateCashbackCommand>, CashbackCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoveCashbackCommand>, CashbackCommandHandler>();
 
             // Infra - Data
-            //services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<ICashbackRepository, CashbackRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<Data.Context.ApplicationDbContext>();
-            services.AddScoped<MongoDbContext>();
+            services.AddScoped<Data.Context.BeblueDbContext>();
 
             // Infra - Data EventSourcing
-            //services.AddScoped<IEventStoreRepository, EventStoreSQLRepository>();
-            //services.AddScoped<IEventStore, SqlEventStore>();
-            //services.AddScoped<EventStoreSQLContext>();
+            services.AddScoped<IEventStoreRepository, EventStoreSQLRepository>();
+            services.AddScoped<IEventStore, SqlEventStore>();
+            services.AddScoped<EventStoreSQLContext>();
 
             // Infra - Identity Services
             services.AddTransient<IEmailSender, AuthEmailMessageSender>();
