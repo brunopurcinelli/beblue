@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -9,21 +10,22 @@ namespace BeBlueApi.Application.ViewModels
     public class CashbackViewModel
     {
         [Key]
+        [JsonProperty("Id do Cashback")]
         public Guid Id { get; set; }
 
         [Required(ErrorMessage = "É Obrigatório inserir o Gênero Musical")]
-        [MinLength(2)]
-        [MaxLength(250)]
-        [DisplayName("Gênero Musical")]
-        public string MusicGender { get; set; }
+        [JsonIgnore]
+        public Guid IdGender { get; set; }
 
         [Required(ErrorMessage = "O dia da Semana é Obrigatório")]
-        [EmailAddress]
-        [DisplayName("Dia da Semana")]
+        [JsonProperty("Dia da Semana")]
         public string WeekDay { get; set; }
 
         [Required(ErrorMessage = "A porcentagem do Cashback é obrigatória")]
-        [DisplayName("Porcentagem")]
-        public double Percent { get; set; }
+        [JsonProperty("Porcentagem")]
+        public decimal Percent { get; set; }
+
+        [JsonProperty("Gênero Musical")]
+        public virtual MusicGenderViewModel MusicGender { get; set; }
     }
 }

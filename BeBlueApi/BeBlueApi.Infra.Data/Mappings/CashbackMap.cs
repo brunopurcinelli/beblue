@@ -8,22 +8,13 @@ namespace BeBlueApi.Infra.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<Cashback> builder)
         {
-            builder.Property(c => c.Id)
-                .HasColumnName("Id");
+            builder.HasKey(c => c.Id);
+            builder.Property(c => c.IdGender).IsRequired();
+            builder.Property(c => c.WeekDay).HasMaxLength(100).IsRequired();
+            builder.Property(c => c.Percent).IsRequired();
 
-            builder.Property(c => c.MusicGender)
-                .HasColumnType("varchar(250)")
-                .HasMaxLength(250)
-                .IsRequired();
+            builder.HasOne(c => c.MusicGender).WithMany(m => m.Cashbacks);
 
-            builder.Property(c => c.WeekDay)
-                .HasColumnType("varchar(100)")
-                .HasMaxLength(100)
-                .IsRequired();
-
-            builder.Property(c => c.Percent)
-                .HasColumnType("numeric(18,2)")
-                .IsRequired();
         }
     }
 }

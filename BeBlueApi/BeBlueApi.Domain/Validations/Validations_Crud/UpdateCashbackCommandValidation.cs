@@ -7,7 +7,7 @@ namespace BeBlueApi.Domain.Validations
         public UpdateCashbackCommandValidation()
         {
             ValidateId();
-            ValidateMusicGender();
+            ValidateIdGender();
             ValidatePercent();
             ValidateWeekDay();
         }

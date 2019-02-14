@@ -2,6 +2,7 @@
 using BeBlueApi.Infra.CrossCutting.Identity.Data;
 using BeBlueApi.Infra.CrossCutting.Identity.Models;
 using BeBlueApi.Infra.CrossCutting.IoC;
+using BeBlueApi.Infra.Data.Helpers;
 using BeBlueApi.WebApi.Configurations;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -16,8 +17,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http.Headers;
 
 namespace BeBlueApi.WebApi
 {
@@ -54,16 +57,27 @@ namespace BeBlueApi.WebApi
             services.AddWebApi(options =>
             {
                 options.OutputFormatters.Remove(new XmlDataContractSerializerOutputFormatter());
-                options.UseCentralRoutePrefix(new RouteAttribute("api/v{version}"));
+                options.UseCentralRoutePrefix(new RouteAttribute("api/v1"));
             });
 
             services.AddAutoMapperSetup();
 
-            services.AddAuthorization(options =>
+            services.AddHttpClient("Spotify_API", client=>
             {
-                options.AddPolicy("CanWriteCustomerData", policy => policy.Requirements.Add(new ClaimRequirement("Customers", "Write")));
-                options.AddPolicy("CanRemoveCustomerData", policy => policy.Requirements.Add(new ClaimRequirement("Customers", "Remove")));
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                string baseURI = Configuration.GetSection("SpotifyApi:Endpoint").Value;
+                string clientId = Configuration.GetSection("SpotifyApi:ClientId").Value;
+                string clientSecret = Configuration.GetSection("SpotifyApi:ClientSecret").Value;
+                client.BaseAddress = new Uri(String.Format(baseURI,clientId));
             });
+
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("CanWriteCustomerData", policy => policy.Requirements.Add(new ClaimRequirement("Customers", "Write")));
+            //    options.AddPolicy("CanRemoveCustomerData", policy => policy.Requirements.Add(new ClaimRequirement("Customers", "Remove")));
+            //});
 
             services.AddSwaggerGen(s =>
             {
@@ -81,6 +95,10 @@ namespace BeBlueApi.WebApi
 
             // .NET Native DI Abstraction
             RegisterServices(services);
+
+            Console.WriteLine("******* SEED SENDO EXECUTADO!!! ****************");
+            DbMigrationHelpers.EnsureSeedData(services.BuildServiceProvider()).GetAwaiter().GetResult();
+            Console.WriteLine("******* SEED FINALIZADO !!! ****************");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

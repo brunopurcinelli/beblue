@@ -9,10 +9,10 @@ namespace BeBlueApi.Domain.Commands
     {
         public Guid Id { get; protected set; }
 
-        public string MusicGender { get; protected set; }
+        public Guid IdGender { get; protected set; }
 
         public string WeekDay { get; protected set; }
 
-        public double Percent { get; protected set; }
+        public decimal Percent { get; protected set; }
     }
 }

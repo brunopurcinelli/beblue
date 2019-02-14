@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BeBlueApi.Domain.Models;
+using BeBlueApi.Infra.Data.Mappings;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -13,7 +15,11 @@ namespace BeBlueApi.Infra.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.ApplyConfiguration(new CustomerMap());
+            modelBuilder.ApplyConfiguration(new DiscMusicMap());
+            modelBuilder.ApplyConfiguration(new MusicGenderMap());
+            modelBuilder.ApplyConfiguration(new CashbackMap());
+            modelBuilder.ApplyConfiguration(new SalesMap());
+            modelBuilder.ApplyConfiguration(new SalesLineMap());
 
             base.OnModelCreating(modelBuilder);
         }
@@ -27,5 +33,14 @@ namespace BeBlueApi.Infra.Data.Context
 
             optionsBuilder.UseSqlServer(config.GetConnectionString("DefaultConnection"));
         }
+        public DbSet<DiscMusic> DiscMusic { get; set; }
+
+        public DbSet<Cashback> Cashback { get; set; }
+
+        public DbSet<MusicGender> MusicGender { get; set; }
+
+        public DbSet<Sales> Sales { get; set; }
+
+        public DbSet<SalesLine> SalesLine { get; set; }
     }
 }

@@ -8,11 +8,10 @@ namespace BeBlueApi.Domain.Validations
 {
     public abstract class CashbackValidation<T> : AbstractValidator<T> where T : CashbackCommand
     {
-        protected void ValidateMusicGender()
+        protected void ValidateIdGender()
         {
-            RuleFor(c => c.MusicGender)
-                .NotEmpty().WithMessage("Please ensure you have entered the Music Gender")
-                .Length(2, 250).WithMessage("The Name must have between 2 and 250 characters");
+            RuleFor(c => c.IdGender)
+                .NotEqual(Guid.Empty);
         }
 
         protected void ValidateWeekDay()
@@ -34,7 +33,7 @@ namespace BeBlueApi.Domain.Validations
                 .NotEqual(Guid.Empty);
         }
 
-        protected static bool HaveMinimumPercent(double percent)
+        protected static bool HaveMinimumPercent(decimal percent)
         {
             return percent > 0;
         }

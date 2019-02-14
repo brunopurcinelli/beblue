@@ -27,9 +27,9 @@ namespace BeBlueApi.Application.EventSourcedNormalizers
                     Id = change.Id == Guid.Empty.ToString() || change.Id == last.Id
                         ? ""
                         : change.Id,
-                    MusicGender = string.IsNullOrWhiteSpace(change.MusicGender) || change.MusicGender == last.MusicGender
+                    IdGender = string.IsNullOrWhiteSpace(change.IdGender) || change.IdGender == last.IdGender
                         ? ""
-                        : change.MusicGender,
+                        : change.IdGender,
                     WeekDay = string.IsNullOrWhiteSpace(change.WeekDay) || change.WeekDay == last.WeekDay
                         ? ""
                         : change.WeekDay,
@@ -58,9 +58,9 @@ namespace BeBlueApi.Application.EventSourcedNormalizers
                 {
                     case "CashbackRegisteredEvent":
                         values = JsonConvert.DeserializeObject<dynamic>(e.Data);
-                        slot.Percent = values["BirthDate"];
-                        slot.WeekDay = values["Email"];
-                        slot.MusicGender = values["Name"];
+                        slot.Percent = values["Percent"];
+                        slot.WeekDay = values["WeekDay"];
+                        slot.IdGender = values["IdGender"];
                         slot.Action = "Registered";
                         slot.When = values["Timestamp"];
                         slot.Id = values["Id"];
@@ -68,9 +68,9 @@ namespace BeBlueApi.Application.EventSourcedNormalizers
                         break;
                     case "CashbackUpdatedEvent":
                         values = JsonConvert.DeserializeObject<dynamic>(e.Data);
-                        slot.Percent = values["BirthDate"];
-                        slot.WeekDay = values["Email"];
-                        slot.MusicGender = values["Name"];
+                        slot.Percent = values["Percent"];
+                        slot.WeekDay = values["WeekDay"];
+                        slot.IdGender = values["IdGender"];
                         slot.Action = "Updated";
                         slot.When = values["Timestamp"];
                         slot.Id = values["Id"];

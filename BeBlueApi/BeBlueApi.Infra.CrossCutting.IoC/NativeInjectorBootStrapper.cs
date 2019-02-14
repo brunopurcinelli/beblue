@@ -39,6 +39,10 @@ namespace BeBlueApi.Infra.CrossCutting.IoC
 
             // Application
             services.AddScoped<ICashbackAppService, CashbackAppService>();
+            services.AddScoped<IDiscMusicAppService, DiscMusicAppService>();
+            services.AddScoped<IMusicGenderAppService, MusicGenderAppService>();
+            services.AddScoped<ISalesAppService, SalesAppService>();
+            services.AddScoped<ISalesLineAppService, SalesLineAppService>();
 
             // Domain - Events
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
@@ -51,8 +55,29 @@ namespace BeBlueApi.Infra.CrossCutting.IoC
             services.AddScoped<IRequestHandler<UpdateCashbackCommand>, CashbackCommandHandler>();
             services.AddScoped<IRequestHandler<RemoveCashbackCommand>, CashbackCommandHandler>();
 
+            services.AddScoped<IRequestHandler<RegisterNewMusicGenderCommand>, MusicGenderCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateMusicGenderCommand>, MusicGenderCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoveMusicGenderCommand>, MusicGenderCommandHandler>();
+
+            services.AddScoped<IRequestHandler<RegisterNewDiscMusicCommand>, DiscMusicCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateDiscMusicCommand>, DiscMusicCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoveDiscMusicCommand>, DiscMusicCommandHandler>();
+
+            services.AddScoped<IRequestHandler<RegisterNewSalesCommand>, SalesCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateSalesCommand>, SalesCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoveSalesCommand>, SalesCommandHandler>();
+
+            services.AddScoped<IRequestHandler<RegisterNewSalesLineCommand>, SalesLineCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateSalesLineCommand>, SalesLineCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoveSalesLineCommand>, SalesLineCommandHandler>();
+
             // Infra - Data
             services.AddScoped<ICashbackRepository, CashbackRepository>();
+            services.AddScoped<IMusicGenderRepository, MusicGenderRepository>();
+            services.AddScoped<IDiscMusicRepository, DiscMusicRepository>();
+            services.AddScoped<ISalesRepository, SalesRepository>();
+            services.AddScoped<ISalesLineRepository, SalesLineRepository>();
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<Data.Context.BeblueDbContext>();
 

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BeBlueApi.WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:BeBlueApi.WebApi.Controllers.SalesController.Get(System.Int32,System.Int32,System.DateTime,System.DateTime)">
+            <remarks>
+            HttpGet 
+            </remarks>
+            <param name="page">Página Atual</param>
+            <param name="size">Quantidade de Itens</param>
+            <param name="dateInitial">Data Inicial</param>
+            <param name="dateFinal">Data Final</param>
+            <returns>Consulta de Ordens de Venda por Período</returns>
+            <response code="200">Sucesso: Retorna o Json</response>
+            <response code="401">Unauthorized: Acesso não Autorizado</response>
+            <response code="404">NotFound: Nenhum registro encontrado</response> 
+        </member>
+    </members>
+</doc>

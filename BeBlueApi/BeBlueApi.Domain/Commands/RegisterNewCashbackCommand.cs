@@ -1,12 +1,13 @@
 ﻿using BeBlueApi.Domain.Validations;
+using System;
 
 namespace BeBlueApi.Domain.Commands
 {
     public class RegisterNewCashbackCommand : CashbackCommand
     {
-        public RegisterNewCashbackCommand(string gender, string weekDay, double percent)
+        public RegisterNewCashbackCommand(Guid idGender, string weekDay, decimal percent)
         {
-            MusicGender = gender;
+            IdGender = idGender;
             WeekDay = weekDay;
             Percent = percent;
         }

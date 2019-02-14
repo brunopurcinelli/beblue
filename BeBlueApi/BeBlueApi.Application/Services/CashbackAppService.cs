@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using BeblueApi.Domain.Core.Bus;
-using BeBlueApi.Application.EventSourcedNormalizers;
 using BeBlueApi.Application.Interfaces;
 using BeBlueApi.Application.ViewModels;
 using BeBlueApi.Domain.Commands;
@@ -9,7 +8,6 @@ using BeBlueApi.Domain.Interfaces;
 using BeBlueApi.Infra.Data.Repository.EventSourcing;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace BeBlueApi.Application.Services
 {
@@ -52,18 +50,7 @@ namespace BeBlueApi.Application.Services
             var updateCommand = _mapper.Map<UpdateCashbackCommand>(CashbackViewModel);
             Bus.SendCommand(updateCommand);
         }
-
-        public void Remove(Guid id)
-        {
-            var removeCommand = new RemoveCashbackCommand(id);
-            Bus.SendCommand(removeCommand);
-        }
-
-        public IList<CashbackHistoryData> GetAllHistory(Guid id)
-        {
-            return CashbackHistory.ToJavaScriptCashbackHistory(_eventStoreRepository.All(id));
-        }
-
+       
         public void Dispose()
         {
             GC.SuppressFinalize(this);

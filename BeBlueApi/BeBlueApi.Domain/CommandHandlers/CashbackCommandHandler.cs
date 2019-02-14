@@ -36,7 +36,7 @@ namespace BeBlueApi.Domain.CommandHandlers
                 return (Task<Unit>)Task.CompletedTask;
             }
 
-            var Cashback = new Cashback(Guid.NewGuid(), message.MusicGender, message.WeekDay, message.Percent);
+            var Cashback = new Cashback(Guid.NewGuid(), message.IdGender, message.WeekDay, message.Percent);
 
             if (_CashbackRepository.GetByWeekDay(Cashback.WeekDay) != null)
             {
@@ -48,7 +48,7 @@ namespace BeBlueApi.Domain.CommandHandlers
 
             if (Commit())
             {
-                Bus.RaiseEvent(new CashbackRegisteredEvent(Cashback.Id, Cashback.MusicGender, Cashback.WeekDay, Cashback.Percent));
+                Bus.RaiseEvent(new CashbackRegisteredEvent(Cashback.Id, Cashback.IdGender, Cashback.WeekDay, Cashback.Percent));
             }
 
             return (Task<Unit>)Task.CompletedTask;
@@ -62,7 +62,7 @@ namespace BeBlueApi.Domain.CommandHandlers
                 return (Task<Unit>)Task.CompletedTask;
             }
 
-            var Cashback = new Cashback(message.Id, message.MusicGender, message.WeekDay, message.Percent);
+            var Cashback = new Cashback(message.Id, message.IdGender, message.WeekDay, message.Percent);
             var existingCashback = _CashbackRepository.GetById(Cashback.Id);
 
             if (existingCashback != null && existingCashback.Id != Cashback.Id)
@@ -78,7 +78,7 @@ namespace BeBlueApi.Domain.CommandHandlers
 
             if (Commit())
             {
-                Bus.RaiseEvent(new CashbackUpdatedEvent(Cashback.Id, Cashback.MusicGender, Cashback.WeekDay, Cashback.Percent));
+                Bus.RaiseEvent(new CashbackUpdatedEvent(Cashback.Id, Cashback.IdGender, Cashback.WeekDay, Cashback.Percent));
             }
 
             return (Task<Unit>)Task.CompletedTask;

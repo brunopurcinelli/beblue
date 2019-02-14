@@ -1,16 +1,17 @@
 ﻿using BeblueApi.Domain.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace BeBlueApi.Domain.Models
 {
     public class Cashback : Entity
     {
-        public Cashback(Guid id, string gender, string weekDay, double percent)
+        public Cashback(Guid id, Guid idGender, string weekDay, decimal percent)
         {
             Id = id;
-            MusicGender = gender;
+            IdGender = idGender;
             WeekDay = weekDay;
             Percent = percent;
         }
@@ -18,10 +19,14 @@ namespace BeBlueApi.Domain.Models
         // Empty constructor for EF
         protected Cashback() { }
 
-        public string MusicGender { get; private set; }
+        public Guid IdGender { get; private set; }
 
         public string WeekDay { get; private set; }
 
-        public double Percent { get; private set; }
+        public decimal Percent { get; private set; }
+
+
+        [ForeignKey("IdGender")]
+        public virtual MusicGender MusicGender{ get; set; }
     }
 }

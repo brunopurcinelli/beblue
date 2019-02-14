@@ -15,4 +15,8 @@
     <ProjectReference Include="..\BeBlueApi.Infra.Data\BeBlueApi.Infra.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>

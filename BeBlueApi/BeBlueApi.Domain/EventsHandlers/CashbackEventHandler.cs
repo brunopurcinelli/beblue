@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace BeBlueApi.Domain.EventsHandlers
 {
-
     public class CashbackEventHandler :
         INotificationHandler<CashbackRegisteredEvent>,
         INotificationHandler<CashbackUpdatedEvent>,

@@ -5,10 +5,10 @@ namespace BeBlueApi.Domain.Commands
 {
     public class UpdateCashbackCommand : CashbackCommand
     {
-        public UpdateCashbackCommand(Guid id, string gender, string weekDay, double percent)
+        public UpdateCashbackCommand(Guid id, Guid idGender, string weekDay, decimal percent)
         {
             Id = id;
-            MusicGender = gender;
+            IdGender = idGender;
             WeekDay = weekDay;
             Percent = percent;
         }

@@ -7,20 +7,20 @@ namespace BeBlueApi.Domain.Events
 {
     public class CashbackRegisteredEvent : Event
     {
-        public CashbackRegisteredEvent(Guid id, string musicGender, string weekDay, double percent)
+        public CashbackRegisteredEvent(Guid id, Guid idGender, string weekDay, decimal percent)
         {
             Id = id;
-            MusicGender = musicGender;
+            IdGender = idGender;
             WeekDay = weekDay;
             Percent = percent;
             AggregateId = id;
         }
         public Guid Id { get; set; }
 
-        public string MusicGender { get; private set; }
+        public Guid IdGender { get; private set; }
 
         public string WeekDay { get; private set; }
 
-        public double Percent { get; private set; }
+        public decimal Percent { get; private set; }
     }
 }
