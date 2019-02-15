@@ -5,10 +5,9 @@ namespace BeBlueApi.Domain.Commands
 {
     public class UpdateSalesCommand : SalesCommand
     {
-        public UpdateSalesCommand(Guid id, DateTime salesDate, decimal totalAmount, decimal totalCashback)
+        public UpdateSalesCommand(Guid id, decimal totalAmount, decimal totalCashback)
         {
             Id = id;
-            SalesDate = salesDate;
             TotalAmount = totalAmount;
             TotalCashback = totalCashback;
         }

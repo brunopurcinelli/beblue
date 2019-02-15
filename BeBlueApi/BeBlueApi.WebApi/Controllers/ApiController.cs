@@ -11,12 +11,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BeBlueApi.WebApi.Controllers
 {
-    public abstract class BaseController : ControllerBase
+    public abstract class ApiController : ControllerBase
     {
         private readonly DomainNotificationHandler _notifications;
         private readonly IMediatorHandler _mediator;
 
-        protected BaseController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediator)
+        protected ApiController(INotificationHandler<DomainNotification> notifications, IMediatorHandler mediator)
         {
             _notifications = (DomainNotificationHandler)notifications;
             _mediator = mediator;

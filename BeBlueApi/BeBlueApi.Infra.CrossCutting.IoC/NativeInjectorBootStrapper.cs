@@ -1,14 +1,14 @@
-﻿using BeblueApi.Domain.Core.Bus;
-using BeblueApi.Domain.Core.Events;
-using BeblueApi.Domain.Core.Notifications;
-using BeblueApi.Infra.CrossCutting.Bus;
-using BeBlueApi.Application.Interfaces;
+﻿using BeBlueApi.Application.Interfaces;
 using BeBlueApi.Application.Services;
 using BeBlueApi.Domain.CommandHandlers;
 using BeBlueApi.Domain.Commands;
+using BeblueApi.Domain.Core.Bus;
+using BeblueApi.Domain.Core.Events;
+using BeblueApi.Domain.Core.Notifications;
 using BeBlueApi.Domain.Events;
 using BeBlueApi.Domain.EventsHandlers;
 using BeBlueApi.Domain.Interfaces;
+using BeblueApi.Infra.CrossCutting.Bus;
 using BeBlueApi.Infra.CrossCutting.Identity.Autorization;
 using BeBlueApi.Infra.CrossCutting.Identity.Models;
 using BeBlueApi.Infra.CrossCutting.Identity.Services;
@@ -31,16 +31,16 @@ namespace BeBlueApi.Infra.CrossCutting.IoC
             // ASP.NET HttpContext dependency
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            services.AddTransient<ISpotifyApiService, SpotifyApiService>();
+
             // Domain Bus (Mediator)
             services.AddScoped<IMediatorHandler, InMemoryBus>();
-
+            
             // ASP.NET Authorization Polices
             services.AddSingleton<IAuthorizationHandler, ClaimsRequirementHandler>();
 
             // Application
-            services.AddScoped<ICashbackAppService, CashbackAppService>();
             services.AddScoped<IDiscMusicAppService, DiscMusicAppService>();
-            services.AddScoped<IMusicGenderAppService, MusicGenderAppService>();
             services.AddScoped<ISalesAppService, SalesAppService>();
             services.AddScoped<ISalesLineAppService, SalesLineAppService>();
 
@@ -51,14 +51,6 @@ namespace BeBlueApi.Infra.CrossCutting.IoC
             services.AddScoped<INotificationHandler<CashbackRemovedEvent>, CashbackEventHandler>();
 
             // Domain - Commands
-            services.AddScoped<IRequestHandler<RegisterNewCashbackCommand>, CashbackCommandHandler>();
-            services.AddScoped<IRequestHandler<UpdateCashbackCommand>, CashbackCommandHandler>();
-            services.AddScoped<IRequestHandler<RemoveCashbackCommand>, CashbackCommandHandler>();
-
-            services.AddScoped<IRequestHandler<RegisterNewMusicGenderCommand>, MusicGenderCommandHandler>();
-            services.AddScoped<IRequestHandler<UpdateMusicGenderCommand>, MusicGenderCommandHandler>();
-            services.AddScoped<IRequestHandler<RemoveMusicGenderCommand>, MusicGenderCommandHandler>();
-
             services.AddScoped<IRequestHandler<RegisterNewDiscMusicCommand>, DiscMusicCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateDiscMusicCommand>, DiscMusicCommandHandler>();
             services.AddScoped<IRequestHandler<RemoveDiscMusicCommand>, DiscMusicCommandHandler>();
@@ -79,7 +71,7 @@ namespace BeBlueApi.Infra.CrossCutting.IoC
             services.AddScoped<ISalesLineRepository, SalesLineRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<Data.Context.BeblueDbContext>();
+            services.AddScoped<BeblueDbContext>();
 
             // Infra - Data EventSourcing
             services.AddScoped<IEventStoreRepository, EventStoreSQLRepository>();

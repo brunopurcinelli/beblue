@@ -14,7 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace BeBlueApi.WebApi.Controllers
 {
     [Authorize]
-    public class DiscMusicController : BaseController
+    [Produces("application/json")]
+    public class DiscMusicController : ApiController
     {
         private readonly IDiscMusicAppService _appService;
 

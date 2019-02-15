@@ -42,7 +42,7 @@ namespace BeBlueApi.Domain.CommandHandlers
                 return (Task<Unit>)Task.CompletedTask;
             }
 
-            var SalesLine = new SalesLine(Guid.NewGuid(), message.IdSales,message.IdItem, message.DiscName, message.Quantity, message.PriceUnit, message.Cashback);
+            var SalesLine = new SalesLine(Guid.NewGuid(), message.IdSales,message.IdDisc, message.Quantity, message.PriceUnit, message.Cashback);
 
             if (_SalesRepository.GetById(SalesLine.IdSales) != null)
             {
@@ -74,7 +74,7 @@ namespace BeBlueApi.Domain.CommandHandlers
                 return (Task<Unit>)Task.CompletedTask;
             }
 
-            var SalesLine = new SalesLine(Guid.NewGuid(), message.IdSales, message.IdItem, message.DiscName, message.Quantity, message.PriceUnit, message.Cashback);
+            var SalesLine = new SalesLine(Guid.NewGuid(), message.IdSales, message.IdDisc, message.Quantity, message.PriceUnit, message.Cashback);
             var existingSalesLine = _SalesLineRepository.GetById(SalesLine.Id);
 
             if (existingSalesLine != null && existingSalesLine.Id != SalesLine.Id)

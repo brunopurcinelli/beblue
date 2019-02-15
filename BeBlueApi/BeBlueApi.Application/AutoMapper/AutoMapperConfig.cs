@@ -7,9 +7,17 @@ namespace BeBlueApi.Application.AutoMapper
 {
     public class AutoMapperConfig
     {
-        public static void RegisterMappings()
+        public static void RegisterMapping()
         {
             Mapper.Initialize(cfg =>
+            {
+                cfg.AddProfile(new DomainToViewModelMappingProfile());
+                cfg.AddProfile(new ViewModelToDomainMappingProfile());
+            });
+        }
+        public static MapperConfiguration RegisterMappings()
+        {
+            return new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new DomainToViewModelMappingProfile());
                 cfg.AddProfile(new ViewModelToDomainMappingProfile());

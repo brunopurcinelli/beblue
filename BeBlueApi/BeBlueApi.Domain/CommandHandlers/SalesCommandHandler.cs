@@ -22,7 +22,7 @@ namespace BeBlueApi.Domain.CommandHandlers
         public SalesCommandHandler(ISalesRepository SalesRepository,
                                       IUnitOfWork uow,
                                       IMediatorHandler bus,
-                                      MediatR.INotificationHandler<DomainNotification> notifications) : base(uow, bus, notifications)
+                                      INotificationHandler<DomainNotification> notifications) : base(uow, bus, notifications)
         {
             _SalesRepository = SalesRepository;
             Bus = bus;

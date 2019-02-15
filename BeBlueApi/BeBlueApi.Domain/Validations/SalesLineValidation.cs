@@ -14,7 +14,7 @@ namespace BeBlueApi.Domain.Validations
 
         protected void ValidateIdItem()
         {
-            RuleFor(c => c.IdItem)
+            RuleFor(c => c.IdDisc)
                 .NotEqual(Guid.Empty);
         }
 

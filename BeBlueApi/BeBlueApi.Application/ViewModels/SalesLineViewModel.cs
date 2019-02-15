@@ -8,29 +8,28 @@ namespace BeBlueApi.Application.ViewModels
     public class SalesLineViewModel
     {
         [Key]
-        [JsonProperty("Id da Linha de Venda")]
         public Guid Id { get; set; }
-        
-        [JsonProperty("Id da Venda")]
+
+        [Required(ErrorMessage = "The IdSales is Required")]
+        [DisplayName("Id da Venda")]
         public Guid IdSales { get; set; }
 
-        [JsonProperty("Id do Disco")]
-        public Guid IdItem { get; set; }
-        
-        [JsonProperty("Nome do Disco")]
-        public string DiscName { get; set; }
+        [Required(ErrorMessage = "The IdDisc is Required")]
+        [DisplayName("Id do Disco")]
+        public Guid IdDisc { get; set; }
 
-        [Required(ErrorMessage = "A quantidade de itens é obrigatória")]
-        [JsonProperty("Quantidade")]
+        [Required(ErrorMessage = "The Quantity is Required")]
+        [DisplayName("Quantidade")]
         public int Quantity { get; set; }
 
-        [JsonProperty("Valor Unitário")]
+        [Required(ErrorMessage = "The Price Unit is Required")]
+        [DisplayName("Valor Unitário")]
         public decimal PriceUnit { get; set; }
 
-        [JsonProperty("Valor Total")]
+        [DisplayName("Valor Total")]
         public decimal SalesPrice { get; set; }
-
-        [JsonProperty("Cashback")]
+                
+        [DisplayName("Quantidade")]
         public decimal Cashback { get; set; }
     }
 }

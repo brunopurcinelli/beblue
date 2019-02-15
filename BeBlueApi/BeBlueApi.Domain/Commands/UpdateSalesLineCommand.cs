@@ -5,12 +5,11 @@ namespace BeBlueApi.Domain.Commands
 {
     public class UpdateSalesLineCommand : SalesLineCommand
     {
-        public UpdateSalesLineCommand(Guid id, Guid idSales, Guid idItem, string discName, int quantity, decimal priceUnit, decimal cashback)
+        public UpdateSalesLineCommand(Guid id, Guid idSales, Guid idItem, int quantity, decimal priceUnit, decimal cashback)
         {
             Id = id;
             IdSales = idSales;
-            IdItem = idItem;
-            DiscName = discName;
+            IdDisc = idItem;
             Quantity = quantity;
             PriceUnit = priceUnit;
             SalesPrice = Quantity * PriceUnit;

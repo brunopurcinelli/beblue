@@ -14,16 +14,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace BeBlueApi.WebApi.Controllers
 {
     [Authorize]
-    public class SalesController : BaseController
+    public class SalesController : ApiController
     {
         private readonly ISalesAppService _appService;
+        private readonly ISalesLineAppService _appLineService;
 
         public SalesController(
             ISalesAppService appService,
+            ISalesLineAppService appLineService,
             INotificationHandler<DomainNotification> notifications,
             IMediatorHandler mediator) : base(notifications, mediator)
         {
             _appService = appService;
+            _appLineService = appLineService;
         }
 
         [HttpGet]
@@ -39,7 +42,7 @@ namespace BeBlueApi.WebApi.Controllers
                 Size = response.Count(),
                 Page = page,
                 Value = response
-            });    
+            });
         }
 
         [HttpGet]
@@ -58,18 +61,51 @@ namespace BeBlueApi.WebApi.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
-        [Route("sales/new")]
-        public IActionResult Post([FromBody] SalesRequest request)
+        [Authorize(Policy = "CanWriteSalesData")]
+        [Route("sales")]
+        public IActionResult Post([FromBody] SalesViewModel salesViewModel)
         {
-            _appService.Register(request);
+            if (!ModelState.IsValid)
+            {
+                NotifyModelStateErrors();
+                return Response(salesViewModel);
+            }
+
+            _appService.Register(salesViewModel);
+
             return Ok(new SelfResponse
             {
                 Href = $"api/v1/sales/new",
                 Rel = new[] { "single" },
                 Size = 1,
-                Value = null
+                Value = salesViewModel
             });
+        }
+
+        [HttpPut]
+        [Authorize(Policy = "CanWriteSalesData")]
+        [Route("sales")]
+        public IActionResult Put([FromBody]SalesViewModel salesViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                NotifyModelStateErrors();
+                return Response(salesViewModel);
+            }
+
+            _appService.Update(salesViewModel);
+
+            return Response(salesViewModel);
+        }
+
+        [HttpDelete]
+        [Authorize(Policy = "CanRemoveSalesData")]
+        [Route("sales")]
+        public IActionResult Delete(Guid id)
+        {
+            _appService.Remove(id);
+
+            return Response();
         }
     }
 }

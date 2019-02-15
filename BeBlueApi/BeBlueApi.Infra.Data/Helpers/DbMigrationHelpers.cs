@@ -1,4 +1,5 @@
 ﻿using BeBlueApi.Domain.Models;
+using BeBlueApi.Infra.CrossCutting.Identity.Data;
 using BeBlueApi.Infra.Data.Context;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,12 +35,18 @@ namespace BeBlueApi.Infra.Data.Helpers
         {
             using (var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
+                var appContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                appContext.Database.Migrate();
+
                 var context = scope.ServiceProvider.GetRequiredService<BeblueDbContext>();
-                if (context.Database.EnsureCreated())
-                {
-                    context.Database.EnsureCreated();
-                    await EnsureSeedContextData(context);
-                }
+                context.Database.Migrate();
+                await EnsureSeedContextData(context);
+
+                //using (var client = _httpClientFactory.CreateClient("Spotify_API"))
+                //{
+
+                //}
+                
             }
         }
 

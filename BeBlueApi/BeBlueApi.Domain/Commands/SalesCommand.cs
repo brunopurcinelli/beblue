@@ -13,7 +13,5 @@ namespace BeBlueApi.Domain.Commands
         public decimal TotalAmount { get; protected set; }
 
         public decimal TotalCashback { get; protected set; }
-
-        public ICollection<SalesLineCommand> Lines { get; set; }
     }
 }

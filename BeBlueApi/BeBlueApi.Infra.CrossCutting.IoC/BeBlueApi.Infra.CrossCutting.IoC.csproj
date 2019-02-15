@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BeBlueApi.Application\BeBlueApi.Application.csproj" />
+    <ProjectReference Include="..\BeBlueApi.Domain\BeBlueApi.Domain.csproj" />
     <ProjectReference Include="..\BeBlueApi.Infra.CrossCutting.Identity\BeBlueApi.Infra.CrossCutting.Identity.csproj" />
     <ProjectReference Include="..\BeBlueApi.Infra.Data\BeBlueApi.Infra.Data.csproj" />
   </ItemGroup>

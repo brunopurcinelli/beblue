@@ -24,8 +24,5 @@ namespace BeBlueApi.Application.ViewModels
         [Required(ErrorMessage = "A porcentagem do Cashback é obrigatória")]
         [JsonProperty("Porcentagem")]
         public decimal Percent { get; set; }
-
-        [JsonProperty("Gênero Musical")]
-        public virtual MusicGenderViewModel MusicGender { get; set; }
     }
 }

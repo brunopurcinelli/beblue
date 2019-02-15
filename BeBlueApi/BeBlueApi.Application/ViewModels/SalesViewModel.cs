@@ -9,19 +9,15 @@ namespace BeBlueApi.Application.ViewModels
     public class SalesViewModel
     {
         [Key]
-        [JsonProperty("Id da Venda")]
         public Guid Id { get; set; }
         
-        [JsonProperty("Data da Venda")]
+        [DisplayName("Data da Venda")]
         public DateTime SalesDate { get; set; }
         
-        [JsonProperty("Valor total da Venda")]
+        [DisplayName("Total da Venda")]
         public decimal TotalAmount { get; set; }
 
-        [JsonProperty("Total do Cashback")]
+        [DisplayName("Total do Cashback")]
         public decimal TotalCashback { get; set; }
-
-        [JsonProperty("Linhas de Venda")]
-        public virtual ICollection<SalesLineViewModel> SalesLines { get; set; }
     }
 }

@@ -6,10 +6,9 @@ namespace BeBlueApi.Domain.Commands
 {
     public class RegisterNewSalesCommand : SalesCommand
     {
-        public RegisterNewSalesCommand(List<SalesLineCommand> lines)
+        public RegisterNewSalesCommand(DateTime salesDate)
         {
-            SalesDate = DateTime.Now.ToLocalTime();
-            Lines = lines;
+            SalesDate = salesDate;
         }
 
         public override bool IsValid()

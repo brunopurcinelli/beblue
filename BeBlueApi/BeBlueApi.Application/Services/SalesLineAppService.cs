@@ -42,19 +42,19 @@ namespace BeBlueApi.Application.Services
 
         public void Register(SalesLineViewModel SalesLineViewModel)
         {
-            var registerCommand = _mapper.Map<RegisterNewCashbackCommand>(SalesLineViewModel);
+            var registerCommand = _mapper.Map<RegisterNewSalesLineCommand>(SalesLineViewModel);
             Bus.SendCommand(registerCommand);
         }
 
         public void Update(SalesLineViewModel SalesLineViewModel)
         {
-            var updateCommand = _mapper.Map<UpdateCashbackCommand>(SalesLineViewModel);
+            var updateCommand = _mapper.Map<UpdateSalesLineCommand>(SalesLineViewModel);
             Bus.SendCommand(updateCommand);
         }
 
         public void Remove(Guid id)
         {
-            var removeCommand = new RemoveCashbackCommand(id);
+            var removeCommand = new RemoveSalesLineCommand(id);
             Bus.SendCommand(removeCommand);
         }
 

@@ -5,16 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.1" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BeblueApi.Domain.Core\BeblueApi.Domain.Core.csproj" />
     <ProjectReference Include="..\BeBlueApi.Domain\BeBlueApi.Domain.csproj" />
+    <ProjectReference Include="..\BeBlueApi.Infra.CrossCutting.Identity\BeBlueApi.Infra.CrossCutting.Identity.csproj" />
   </ItemGroup>
 
   <ItemGroup>

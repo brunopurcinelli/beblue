@@ -10,7 +10,6 @@ namespace BeBlueApi.Application.AutoMapper
         {
             CreateMap<Cashback, CashbackViewModel>();
             CreateMap<DiscMusic, DiscMusicViewModel>();
-            CreateMap<MusicGender, MusicGenderViewModel>();
             CreateMap<Sales, SalesViewModel>();
             CreateMap<SalesLine, SalesLineViewModel>();
         }

@@ -5,20 +5,18 @@ namespace BeBlueApi.Domain.Commands
 {
     public abstract class SalesLineCommand : Command
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; protected set; }
 
-        public Guid IdSales { get; set; }
+        public Guid IdSales { get; protected set; }
 
-        public Guid IdItem { get; set; }
+        public Guid IdDisc { get; protected set; }
 
-        public string DiscName { get; set; }
+        public int Quantity { get; protected set; }
 
-        public int Quantity { get; set; }
+        public decimal PriceUnit { get; protected set; }
 
-        public decimal PriceUnit { get; set; }
+        public decimal SalesPrice { get; protected set; }
 
-        public decimal SalesPrice { get; set; }
-
-        public decimal Cashback { get; set; }
+        public decimal Cashback { get; protected set; }
     }
 }

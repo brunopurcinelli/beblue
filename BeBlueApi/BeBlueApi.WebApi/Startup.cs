@@ -7,18 +7,14 @@ using BeBlueApi.WebApi.Configurations;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.Azure.KeyVault.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.Http.Headers;
 
@@ -54,11 +50,17 @@ namespace BeBlueApi.WebApi
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddWebApi(options =>
+            //services.AddWebApi(options =>
+            //{
+            //    options.OutputFormatters.Remove(new XmlDataContractSerializerOutputFormatter());
+            //    options.UseCentralRoutePrefix(new RouteAttribute("api/v1"));
+            //});
+            services.AddMvc(options =>
             {
                 options.OutputFormatters.Remove(new XmlDataContractSerializerOutputFormatter());
-                options.UseCentralRoutePrefix(new RouteAttribute("api/v1"));
-            });
+                options.UseCentralRoutePrefix(new RouteAttribute("api/v{version}"));
+            })
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddAutoMapperSetup();
 
@@ -73,11 +75,11 @@ namespace BeBlueApi.WebApi
                 client.BaseAddress = new Uri(String.Format(baseURI,clientId));
             });
 
-            //services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("CanWriteCustomerData", policy => policy.Requirements.Add(new ClaimRequirement("Customers", "Write")));
-            //    options.AddPolicy("CanRemoveCustomerData", policy => policy.Requirements.Add(new ClaimRequirement("Customers", "Remove")));
-            //});
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("CanWriteSalesData", policy => policy.Requirements.Add(new ClaimRequirement("Sales", "Write")));
+                options.AddPolicy("CanRemoveSalesData", policy => policy.Requirements.Add(new ClaimRequirement("Sales", "Remove")));
+            });
 
             services.AddSwaggerGen(s =>
             {
@@ -85,8 +87,7 @@ namespace BeBlueApi.WebApi
                 {
                     Version = "v1",
                     Title = "BeBlue Project",
-                    Description = "BeBlueAPI Swagger surface",
-                    License = new License { Name = "MIT", Url = "https://github.com/EduardoPires/EquinoxProject/blob/master/LICENSE" }
+                    Description = "BeBlueAPI Swagger surface"
                 });
             });
 
@@ -96,22 +97,22 @@ namespace BeBlueApi.WebApi
             // .NET Native DI Abstraction
             RegisterServices(services);
 
-            Console.WriteLine("******* SEED SENDO EXECUTADO!!! ****************");
+            //Console.WriteLine("******* SEED SENDO EXECUTADO!!! ****************");
             DbMigrationHelpers.EnsureSeedData(services.BuildServiceProvider()).GetAwaiter().GetResult();
-            Console.WriteLine("******* SEED FINALIZADO !!! ****************");
+            //Console.WriteLine("******* SEED FINALIZADO !!! ****************");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app,
-                               IHostingEnvironment env,
-                               ILoggerFactory loggerFactory,
-                               IHttpContextAccessor accessor)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            loggerFactory.AddConsole();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
             }
 
             app.UseCors(c =>
@@ -121,14 +122,14 @@ namespace BeBlueApi.WebApi
                 c.AllowAnyOrigin();
             });
 
-            app.UseStaticFiles();
+            app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
 
             app.UseSwagger();
             app.UseSwaggerUI(s =>
             {
-                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Equinox Project API v1.1");
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Beblue API v1.1");
             });
         }
 
