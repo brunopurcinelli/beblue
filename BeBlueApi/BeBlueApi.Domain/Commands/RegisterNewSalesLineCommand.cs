@@ -5,13 +5,13 @@ namespace BeBlueApi.Domain.Commands
 {
     public class RegisterNewSalesLineCommand : SalesLineCommand
     {
-        public RegisterNewSalesLineCommand(Guid idSales, Guid idItem, int quantity, decimal priceUnit, decimal cashback)
+        public RegisterNewSalesLineCommand(Guid idSales, Guid idItem, int quantity, decimal priceUnit, decimal salesPrice, decimal cashback)
         {
             IdSales = idSales;
             IdDisc = idItem;
             Quantity = quantity;
             PriceUnit = priceUnit;
-            SalesPrice = Quantity * PriceUnit;
+            SalesPrice = salesPrice;
             Cashback = cashback;
         }
 

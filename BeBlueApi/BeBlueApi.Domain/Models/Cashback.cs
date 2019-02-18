@@ -8,7 +8,7 @@ namespace BeBlueApi.Domain.Models
 {
     public class Cashback : Entity
     {
-        public Cashback(Guid id, Guid idGender, string weekDay, decimal percent)
+        public Cashback(Guid id, Guid idGender, DayOfWeek weekDay, decimal percent)
         {
             Id = id;
             IdGender = idGender;
@@ -21,11 +21,10 @@ namespace BeBlueApi.Domain.Models
 
         public Guid IdGender { get; private set; }
 
-        public string WeekDay { get; private set; }
+        public DayOfWeek WeekDay { get; private set; }
 
         public decimal Percent { get; private set; }
-
-
+        
         [ForeignKey("IdGender")]
         public virtual MusicGender MusicGender{ get; set; }
     }

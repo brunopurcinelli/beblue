@@ -58,11 +58,6 @@ namespace BeBlueApi.Application.Services
             Bus.SendCommand(removeCommand);
         }
 
-        public IList<CashbackHistoryData> GetAllHistory(Guid id)
-        {
-            return CashbackHistory.ToJavaScriptCashbackHistory(_eventStoreRepository.All(id));
-        }
-
         public void Dispose()
         {
             GC.SuppressFinalize(this);

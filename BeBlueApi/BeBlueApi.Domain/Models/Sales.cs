@@ -17,11 +17,11 @@ namespace BeBlueApi.Domain.Models
         // Empty constructor for EF
         protected Sales() { }
 
-        public DateTime SalesDate { get; private set; }
+        public DateTime SalesDate { get; set; }
 
         public decimal TotalAmount { get; set; }
 
-        public decimal TotalCashback { get; private set; }
+        public decimal TotalCashback { get;  set; }
 
 
         public ICollection<SalesLine> Lines { get; set; }

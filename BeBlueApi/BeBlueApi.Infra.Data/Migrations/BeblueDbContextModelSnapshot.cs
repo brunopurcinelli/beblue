@@ -15,7 +15,7 @@ namespace BeBlueApi.Infra.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
+                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -28,9 +28,7 @@ namespace BeBlueApi.Infra.Data.Migrations
 
                     b.Property<decimal>("Percent");
 
-                    b.Property<string>("WeekDay")
-                        .IsRequired()
-                        .HasMaxLength(100);
+                    b.Property<int>("WeekDay");
 
                     b.HasKey("Id");
 
@@ -62,12 +60,9 @@ namespace BeBlueApi.Infra.Data.Migrations
             modelBuilder.Entity("BeBlueApi.Domain.Models.MusicGender", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("Id");
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("varchar(250)")
                         .HasMaxLength(250);
 
                     b.HasKey("Id");
@@ -78,16 +73,13 @@ namespace BeBlueApi.Infra.Data.Migrations
             modelBuilder.Entity("BeBlueApi.Domain.Models.Sales", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("Id");
+                        .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("SalesDate");
 
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("numeric(18,2)");
+                    b.Property<decimal>("TotalAmount");
 
-                    b.Property<decimal>("TotalCashback")
-                        .HasColumnType("numeric(18,2)");
+                    b.Property<decimal>("TotalCashback");
 
                     b.HasKey("Id");
 

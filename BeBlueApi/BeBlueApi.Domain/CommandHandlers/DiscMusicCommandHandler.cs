@@ -12,9 +12,9 @@ using MediatR;
 namespace BeBlueApi.Domain.CommandHandlers
 {
     public class DiscMusicCommandHandler : CommandHandler,
-        IRequestHandler<RegisterNewDiscMusicCommand>,
-        IRequestHandler<UpdateDiscMusicCommand>,
-        IRequestHandler<RemoveDiscMusicCommand>
+        IRequestHandler<RegisterNewDiscMusicCommand, bool>,
+        IRequestHandler<UpdateDiscMusicCommand, bool>,
+        IRequestHandler<RemoveDiscMusicCommand, bool>
     {
         private readonly IDiscMusicRepository _DiscMusicRepository;
         private readonly IMusicGenderRepository _MusicGenderRepository;
@@ -31,12 +31,12 @@ namespace BeBlueApi.Domain.CommandHandlers
             Bus = bus;
         }
 
-        public Task<Unit> Handle(RegisterNewDiscMusicCommand message, CancellationToken cancellationToken)
+        public Task<bool> Handle(RegisterNewDiscMusicCommand message, CancellationToken cancellationToken)
         {
             if (!message.IsValid())
             {
                 NotifyValidationErrors(message);
-                return (Task<Unit>)Task.CompletedTask;
+                return Task.FromResult(false);
             }
 
             var DiscMusic = new DiscMusic(Guid.NewGuid(), message.Name, message.IdGender, message.Price);
@@ -44,7 +44,7 @@ namespace BeBlueApi.Domain.CommandHandlers
             if (_MusicGenderRepository.GetById(DiscMusic.IdGender) != null)
             {
                 Bus.RaiseEvent(new DomainNotification(message.MessageType, "O tipo de gênero não existe."));
-                return (Task<Unit>)Task.CompletedTask;
+                return Task.FromResult(false);
             }
 
             _DiscMusicRepository.Add(DiscMusic);
@@ -54,15 +54,15 @@ namespace BeBlueApi.Domain.CommandHandlers
                 Bus.RaiseEvent(new DiscMusicRegisteredEvent(DiscMusic.Id, DiscMusic.IdGender, DiscMusic.Name, DiscMusic.Price));
             }
 
-            return (Task<Unit>)Task.CompletedTask;
+            return Task.FromResult(false);
         }
 
-        public Task<Unit> Handle(UpdateDiscMusicCommand message, CancellationToken cancellationToken)
+        public Task<bool> Handle(UpdateDiscMusicCommand message, CancellationToken cancellationToken)
         {
             if (!message.IsValid())
             {
                 NotifyValidationErrors(message);
-                return (Task<Unit>)Task.CompletedTask;
+                return Task.FromResult(false);
             }
 
             var DiscMusic = new DiscMusic(Guid.NewGuid(), message.Name, message.IdGender, message.Price);
@@ -73,7 +73,7 @@ namespace BeBlueApi.Domain.CommandHandlers
                 if (!existingDiscMusic.Equals(DiscMusic))
                 {
                     Bus.RaiseEvent(new DomainNotification(message.MessageType, "O Item está incorreto ou não existe"));
-                    return (Task<Unit>)Task.CompletedTask;
+                    return Task.FromResult(false);
                 }
             }
 
@@ -84,15 +84,15 @@ namespace BeBlueApi.Domain.CommandHandlers
                 Bus.RaiseEvent(new DiscMusicRegisteredEvent(DiscMusic.Id, DiscMusic.IdGender, DiscMusic.Name, DiscMusic.Price));
             }
 
-            return (Task<Unit>)Task.CompletedTask;
+            return Task.FromResult(false);
         }
 
-        public Task<Unit> Handle(RemoveDiscMusicCommand message, CancellationToken cancellationToken)
+        public Task<bool> Handle(RemoveDiscMusicCommand message, CancellationToken cancellationToken)
         {
             if (!message.IsValid())
             {
                 NotifyValidationErrors(message);
-                return (Task<Unit>)Task.CompletedTask;
+                return Task.FromResult(false);
             }
 
             _DiscMusicRepository.Remove(message.Id);
@@ -102,7 +102,7 @@ namespace BeBlueApi.Domain.CommandHandlers
                 Bus.RaiseEvent(new DiscMusicRemovedEvent(message.Id));
             }
 
-            return (Task<Unit>)Task.CompletedTask;
+            return Task.FromResult(false);
         }
 
         public void Dispose()

@@ -2,6 +2,7 @@
 using BeBlueApi.Domain.Models;
 using BeBlueApi.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 
 namespace BeBlueApi.Infra.Data.Repository
@@ -14,9 +15,9 @@ namespace BeBlueApi.Infra.Data.Repository
 
         }
 
-        public Cashback GetByWeekDay(string weekDay)
+        public Cashback GetByWeekDay(Guid idGender, DateTime date)
         {
-            return DbSet.AsNoTracking().FirstOrDefault(c => c.WeekDay == weekDay);
+            return DbSet.AsNoTracking().FirstOrDefault(c => c.IdGender.ToString() == idGender.ToString() && c.WeekDay == date.DayOfWeek);
         }
     }
 }

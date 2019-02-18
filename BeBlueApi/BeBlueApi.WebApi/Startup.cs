@@ -1,4 +1,5 @@
-﻿using BeBlueApi.Infra.CrossCutting.Identity.Autorization;
+﻿using BeBlueApi.Application.Interfaces;
+using BeBlueApi.Infra.CrossCutting.Identity.Autorization;
 using BeBlueApi.Infra.CrossCutting.Identity.Data;
 using BeBlueApi.Infra.CrossCutting.Identity.Models;
 using BeBlueApi.Infra.CrossCutting.IoC;
@@ -58,7 +59,7 @@ namespace BeBlueApi.WebApi
             services.AddMvc(options =>
             {
                 options.OutputFormatters.Remove(new XmlDataContractSerializerOutputFormatter());
-                options.UseCentralRoutePrefix(new RouteAttribute("api/v{version}"));
+                options.UseCentralRoutePrefix(new RouteAttribute("api/v1"));
             })
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -131,6 +132,9 @@ namespace BeBlueApi.WebApi
             {
                 s.SwaggerEndpoint("/swagger/v1/swagger.json", "Beblue API v1.1");
             });
+
+            var spotifyApi = app.ApplicationServices.GetService<ISpotifyApiService>();
+            spotifyApi.ConnectSpotifyApi();
         }
 
         private static void RegisterServices(IServiceCollection services)

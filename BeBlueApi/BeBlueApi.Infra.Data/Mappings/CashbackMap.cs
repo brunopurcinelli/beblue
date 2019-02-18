@@ -10,7 +10,7 @@ namespace BeBlueApi.Infra.Data.Mappings
         {
             builder.HasKey(c => c.Id);
             builder.Property(c => c.IdGender).IsRequired();
-            builder.Property(c => c.WeekDay).HasMaxLength(100).IsRequired();
+            builder.Property(c => c.WeekDay).IsRequired();
             builder.Property(c => c.Percent).IsRequired();
 
             builder.HasOne(c => c.MusicGender).WithMany(m => m.Cashbacks);

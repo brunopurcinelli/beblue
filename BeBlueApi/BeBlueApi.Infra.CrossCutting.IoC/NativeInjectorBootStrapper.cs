@@ -51,17 +51,17 @@ namespace BeBlueApi.Infra.CrossCutting.IoC
             services.AddScoped<INotificationHandler<CashbackRemovedEvent>, CashbackEventHandler>();
 
             // Domain - Commands
-            services.AddScoped<IRequestHandler<RegisterNewDiscMusicCommand>, DiscMusicCommandHandler>();
-            services.AddScoped<IRequestHandler<UpdateDiscMusicCommand>, DiscMusicCommandHandler>();
-            services.AddScoped<IRequestHandler<RemoveDiscMusicCommand>, DiscMusicCommandHandler>();
+            services.AddScoped<IRequestHandler<RegisterNewDiscMusicCommand, bool>, DiscMusicCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateDiscMusicCommand, bool>, DiscMusicCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoveDiscMusicCommand, bool>, DiscMusicCommandHandler>();
 
-            services.AddScoped<IRequestHandler<RegisterNewSalesCommand>, SalesCommandHandler>();
-            services.AddScoped<IRequestHandler<UpdateSalesCommand>, SalesCommandHandler>();
-            services.AddScoped<IRequestHandler<RemoveSalesCommand>, SalesCommandHandler>();
+            services.AddScoped<IRequestHandler<RegisterNewSalesCommand, bool>, SalesCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateSalesCommand, bool>, SalesCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoveSalesCommand, bool>, SalesCommandHandler>();
 
-            services.AddScoped<IRequestHandler<RegisterNewSalesLineCommand>, SalesLineCommandHandler>();
-            services.AddScoped<IRequestHandler<UpdateSalesLineCommand>, SalesLineCommandHandler>();
-            services.AddScoped<IRequestHandler<RemoveSalesLineCommand>, SalesLineCommandHandler>();
+            services.AddScoped<IRequestHandler<RegisterNewSalesLineCommand, bool>, SalesLineCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateSalesLineCommand, bool>, SalesLineCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoveSalesLineCommand, bool>, SalesLineCommandHandler>();
 
             // Infra - Data
             services.AddScoped<ICashbackRepository, CashbackRepository>();
@@ -84,6 +84,9 @@ namespace BeBlueApi.Infra.CrossCutting.IoC
 
             // Infra - Identity
             services.AddScoped<IUser, AspNetUser>();
+
+            // Spotify API
+            services.AddTransient<ISpotifyApiService, SpotifyApiService>();
         }
     }
 }

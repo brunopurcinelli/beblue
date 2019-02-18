@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BeBlueApi.Infra.Data.Migrations
 {
-    public partial class BeblueSQL : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,7 @@ namespace BeBlueApi.Infra.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Description = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: false)
+                    Description = table.Column<string>(maxLength: 250, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -25,8 +25,8 @@ namespace BeBlueApi.Infra.Data.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     SalesDate = table.Column<DateTime>(nullable: false),
-                    TotalAmount = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
-                    TotalCashback = table.Column<decimal>(type: "numeric(18,2)", nullable: false)
+                    TotalAmount = table.Column<decimal>(nullable: false),
+                    TotalCashback = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -39,7 +39,7 @@ namespace BeBlueApi.Infra.Data.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     IdGender = table.Column<Guid>(nullable: false),
-                    WeekDay = table.Column<string>(maxLength: 100, nullable: false),
+                    WeekDay = table.Column<int>(nullable: false),
                     Percent = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>

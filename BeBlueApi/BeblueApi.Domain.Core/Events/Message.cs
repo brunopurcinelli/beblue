@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BeblueApi.Domain.Core.Events
 {
-    public abstract class Message : IRequest
+    public abstract class Message : IRequest<bool>
     {
         public string MessageType { get; protected set; }
         public Guid AggregateId { get; protected set; }

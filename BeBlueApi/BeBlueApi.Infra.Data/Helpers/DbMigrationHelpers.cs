@@ -1,7 +1,10 @@
 ﻿using BeBlueApi.Domain.Models;
 using BeBlueApi.Infra.CrossCutting.Identity.Data;
+using BeBlueApi.Infra.CrossCutting.Identity.Models;
 using BeBlueApi.Infra.Data.Context;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -38,16 +41,59 @@ namespace BeBlueApi.Infra.Data.Helpers
                 var appContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 appContext.Database.Migrate();
 
+                var eventContext = scope.ServiceProvider.GetRequiredService<EventStoreSQLContext>();
+                eventContext.Database.Migrate();
+
                 var context = scope.ServiceProvider.GetRequiredService<BeblueDbContext>();
                 context.Database.Migrate();
                 await EnsureSeedContextData(context);
 
-                //using (var client = _httpClientFactory.CreateClient("Spotify_API"))
-                //{
-
-                //}
-                
             }
+        }
+        public static async Task EnsureSeedData(IApplicationBuilder applicationBuilder)
+        {
+            using (var serviceScope = applicationBuilder.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                AppDbContext context = serviceScope.ServiceProvider.GetService<ISpotifyApiService>();
+
+                if (!context.Products.Any())
+                {
+                    // Seed Here
+                }
+
+                context.SaveChanges();
+            }
+
+            using (var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var appContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                appContext.Database.Migrate();
+
+                var eventContext = scope.ServiceProvider.GetRequiredService<EventStoreSQLContext>();
+                eventContext.Database.Migrate();
+
+                var context = scope.ServiceProvider.GetRequiredService<BeblueDbContext>();
+                context.Database.Migrate();
+                await EnsureSeedContextData(context);
+
+            }
+        }
+        /// <summary>
+        /// Generate default clients, identity and api resources
+        /// </summary>
+        private static async Task EnsureSeedContextData(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        {
+            // Create admin user
+            if (await userManager.FindByNameAsync(Users.AdminUserName) != null) return;
+
+            var user = new ApplicationUser
+            {
+                UserName = Users.AdminUserName,
+                Email = Users.AdminEmail,
+                EmailConfirmed = true
+            };
+
+            var result = await userManager.CreateAsync(user, Users.AdminPassword);
         }
 
         /// <summary>
@@ -142,7 +188,7 @@ namespace BeBlueApi.Infra.Data.Helpers
                         }
 
                         #endregion
-                        await context.Cashback.AddAsync(new Cashback(new Guid(), musicGender.Id, DayOfWeek.ToString(), percent));
+                        await context.Cashback.AddAsync(new Cashback(new Guid(), musicGender.Id, DayOfWeek, percent));
                     }
 
                     for (int i = 0; i < 20; i++)

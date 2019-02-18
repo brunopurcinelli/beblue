@@ -8,13 +8,8 @@ namespace BeBlueApi.Infra.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<MusicGender> builder)
         {
-            builder.Property(c => c.Id)
-                .HasColumnName("Id");
-
-            builder.Property(c => c.Description)
-                .HasColumnType("varchar(250)")
-                .HasMaxLength(250)
-                .IsRequired();
+            builder.HasKey(c => c.Id);
+            builder.Property(c => c.Description).HasMaxLength(250);
         }
     }
 }

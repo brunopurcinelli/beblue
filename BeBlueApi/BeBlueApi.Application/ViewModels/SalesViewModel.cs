@@ -19,5 +19,8 @@ namespace BeBlueApi.Application.ViewModels
 
         [DisplayName("Total do Cashback")]
         public decimal TotalCashback { get; set; }
+
+        [DisplayName("Linhas de Venda")]
+        public ICollection<SalesLineViewModel> SalesLines { get; set; }
     }
 }

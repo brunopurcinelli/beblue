@@ -70,6 +70,7 @@ namespace BeBlueApi.WebApi.Controllers
                 NotifyModelStateErrors();
                 return Response(salesViewModel);
             }
+            salesViewModel.SalesDate = DateTime.Now.ToLocalTime();
 
             _appService.Register(salesViewModel);
 

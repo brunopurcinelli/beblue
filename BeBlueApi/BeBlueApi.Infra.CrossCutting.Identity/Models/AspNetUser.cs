@@ -1,9 +1,7 @@
 ﻿using BeBlueApi.Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
-using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
 
 namespace BeBlueApi.Infra.CrossCutting.Identity.Models
 {
@@ -29,3 +27,4 @@ namespace BeBlueApi.Infra.CrossCutting.Identity.Models
         }
     }
 }
+
