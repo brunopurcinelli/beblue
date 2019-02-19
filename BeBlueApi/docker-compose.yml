@@ -1,0 +1,36 @@
+version: '3.4'
+
+services:
+  db:
+    image: microsoft/mssql-server-linux:2017-latest
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: 'Usuario123'
+    healthcheck:
+      test: sqlcmd -S localhost -U SA -P 'Usuario123' -Q 'select 1'
+    volumes:
+      - mssql-data:/var/opt/mssql/data
+    networks:
+      - beblue-network
+    ports:
+      - "1433:1433"
+
+  beblueapi:
+    image: brunopurcinelli/beblueapiwebapi:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    #environment:
+    depends_on:
+      - "db"
+    networks:
+      - beblue-network
+    ports:
+     - "80:80"
+
+volumes:
+  mssql-data:
+
+networks:
+  beblue-network:
+    driver: bridge

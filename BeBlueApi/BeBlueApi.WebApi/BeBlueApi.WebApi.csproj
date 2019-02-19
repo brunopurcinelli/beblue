@@ -8,11 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentSpotifyApi" Version="1.4.0" />
+    <PackageReference Include="FluentSpotifyApi.AuthorizationFlows" Version="1.4.0" />
+    <PackageReference Include="FluentSpotifyApi.AuthorizationFlows.AspNetCore" Version="1.4.0" />
+    <PackageReference Include="FluentSpotifyApi.Core" Version="1.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="6.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.4.4" />
+    <PackageReference Include="SpotifyAPI-NET" Version="2.19.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
 

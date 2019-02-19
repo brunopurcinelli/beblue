@@ -5,9 +5,15 @@ using BeBlueApi.Infra.CrossCutting.Identity.Models;
 using BeBlueApi.Infra.CrossCutting.IoC;
 using BeBlueApi.Infra.Data.Helpers;
 using BeBlueApi.WebApi.Configurations;
+using FluentSpotifyApi.AuthorizationFlows.AspNetCore.AuthorizationCode.Extensions;
+using FluentSpotifyApi.AuthorizationFlows.AspNetCore.AuthorizationCode.Handler;
+using FluentSpotifyApi.Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -24,6 +30,7 @@ namespace BeBlueApi.WebApi
     public class Startup
     {
         public IConfigurationRoot Configuration { get; }
+        private const string SpotifyAuthenticationScheme = SpotifyDefaults.AuthenticationScheme;
 
         public Startup(IHostingEnvironment env)
         {
@@ -65,17 +72,29 @@ namespace BeBlueApi.WebApi
 
             services.AddAutoMapperSetup();
 
-            services.AddHttpClient("Spotify_API", client=>
-            {
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                string baseURI = Configuration.GetSection("SpotifyApi:Endpoint").Value;
-                string clientId = Configuration.GetSection("SpotifyApi:ClientId").Value;
-                string clientSecret = Configuration.GetSection("SpotifyApi:ClientSecret").Value;
-                client.BaseAddress = new Uri(String.Format(baseURI,clientId));
-            });
-
+            services
+                .AddFluentSpotifyClient(clientBuilder => clientBuilder
+                    .ConfigurePipeline(pipeline=>pipeline
+                        .AddAspNetCoreAuthorizationCodeFlow(
+                            spotifyAuthenticationScheme: SpotifyAuthenticationScheme)));
+            services
+                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                    .AddCookie(
+                        o =>
+                        {
+                            o.LoginPath = new PathString("/login");
+                            o.LogoutPath = new PathString("/logout");
+                        })
+                    .AddSpotify(
+                        SpotifyAuthenticationScheme,
+                        o =>
+                        {
+                            o.ClientId = Configuration.GetSection("SpotifyApi:ClientId").Value;
+                            o.ClientSecret = Configuration.GetSection("SpotifyApi:ClientSecret").Value;
+                            o.Scope.Add("playlist-read-private");
+                            o.Scope.Add("playlist-read-collaborative");
+                            o.SaveTokens = true;
+                        });
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("CanWriteSalesData", policy => policy.Requirements.Add(new ClaimRequirement("Sales", "Write")));
@@ -98,7 +117,7 @@ namespace BeBlueApi.WebApi
             // .NET Native DI Abstraction
             RegisterServices(services);
 
-            //Console.WriteLine("******* SEED SENDO EXECUTADO!!! ****************");
+            //Console.WriteLine("******* SEED EXECUTANDO !!! ****************");
             DbMigrationHelpers.EnsureSeedData(services.BuildServiceProvider()).GetAwaiter().GetResult();
             //Console.WriteLine("******* SEED FINALIZADO !!! ****************");
         }
@@ -133,8 +152,33 @@ namespace BeBlueApi.WebApi
                 s.SwaggerEndpoint("/swagger/v1/swagger.json", "Beblue API v1.1");
             });
 
-            var spotifyApi = app.ApplicationServices.GetService<ISpotifyApiService>();
-            spotifyApi.ConnectSpotifyApi();
+            app.Map(
+                "/login",
+                builder =>
+                {
+                    builder.Run(
+                        async context =>
+                        {
+                            // Return a challenge to invoke the Spotify authentication scheme
+                            await context.ChallengeAsync(SpotifyAuthenticationScheme, properties: new AuthenticationProperties() { RedirectUri = "/", IsPersistent = true });
+                        });
+                });
+
+            // Listen for requests on the /logout path, and sign the user out
+            app.Map(
+                "/logout",
+                builder =>
+                {
+                    builder.Run(
+                        async context =>
+                        {
+                            // Sign the user out of the authentication middleware (i.e. it will clear the Auth cookie)
+                            await context.SignOutAsync();
+
+                            // Redirect the user to the home page after signing out
+                            context.Response.Redirect("/");
+                        });
+                });
         }
 
         private static void RegisterServices(IServiceCollection services)

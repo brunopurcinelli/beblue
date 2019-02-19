@@ -10,7 +10,8 @@ namespace BeBlueApi.Application.ViewModels
     {
         [Key]
         public Guid Id { get; set; }
-        
+
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         [DisplayName("Data da Venda")]
         public DateTime SalesDate { get; set; }
         
@@ -21,6 +22,6 @@ namespace BeBlueApi.Application.ViewModels
         public decimal TotalCashback { get; set; }
 
         [DisplayName("Linhas de Venda")]
-        public ICollection<SalesLineViewModel> SalesLines { get; set; }
+        public List<SalesLineViewModel> SalesLines { get; set; }
     }
 }

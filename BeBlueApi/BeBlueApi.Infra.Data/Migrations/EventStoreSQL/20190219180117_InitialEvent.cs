@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BeBlueApi.Infra.Data.Migrations.EventStoreSQL
 {
-    public partial class initial : Migration
+    public partial class InitialEvent : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

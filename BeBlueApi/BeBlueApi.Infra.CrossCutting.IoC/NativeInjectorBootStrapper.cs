@@ -51,10 +51,6 @@ namespace BeBlueApi.Infra.CrossCutting.IoC
             services.AddScoped<INotificationHandler<CashbackRemovedEvent>, CashbackEventHandler>();
 
             // Domain - Commands
-            services.AddScoped<IRequestHandler<RegisterNewDiscMusicCommand, bool>, DiscMusicCommandHandler>();
-            services.AddScoped<IRequestHandler<UpdateDiscMusicCommand, bool>, DiscMusicCommandHandler>();
-            services.AddScoped<IRequestHandler<RemoveDiscMusicCommand, bool>, DiscMusicCommandHandler>();
-
             services.AddScoped<IRequestHandler<RegisterNewSalesCommand, bool>, SalesCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateSalesCommand, bool>, SalesCommandHandler>();
             services.AddScoped<IRequestHandler<RemoveSalesCommand, bool>, SalesCommandHandler>();
@@ -86,7 +82,7 @@ namespace BeBlueApi.Infra.CrossCutting.IoC
             services.AddScoped<IUser, AspNetUser>();
 
             // Spotify API
-            services.AddTransient<ISpotifyApiService, SpotifyApiService>();
+            //services.AddTransient<ISpotifyApiService, SpotifyApiService>();
         }
     }
 }

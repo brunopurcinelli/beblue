@@ -8,10 +8,13 @@ namespace BeBlueApi.Domain.Models
 {
     public class DiscMusic : Entity
     {
-        public DiscMusic(Guid id, string name, Guid idGender, decimal price)
+        public DiscMusic(Guid id, string name, Guid idGender, string idSpotify, string artistName, string albumGroup, decimal price)
         {
             Id = id;
             Name = name;
+            IdSpotify = idSpotify;
+            ArtistName = artistName;
+            AlbumGroup = albumGroup;
             IdGender = idGender;
             Price = price;
         }
@@ -20,6 +23,12 @@ namespace BeBlueApi.Domain.Models
         protected DiscMusic() { }
 
         public string Name { get; private set; }
+
+        public string IdSpotify { get; private set; }
+
+        public string ArtistName { get; private set; }
+
+        public string AlbumGroup { get; private set; }
 
         public Guid IdGender { get; set; }
 

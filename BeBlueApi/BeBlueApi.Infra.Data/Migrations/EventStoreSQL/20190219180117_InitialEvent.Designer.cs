@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeBlueApi.Infra.Data.Migrations.EventStoreSQL
 {
     [DbContext(typeof(EventStoreSQLContext))]
-    [Migration("20190218174821_initial")]
-    partial class initial
+    [Migration("20190219180117_InitialEvent")]
+    partial class InitialEvent
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -11,9 +11,6 @@ namespace BeBlueApi.Application.AutoMapper
     {
         public ViewModelToDomainMappingProfile()
         {
-            CreateMap<DiscMusicViewModel, RegisterNewDiscMusicCommand>().ConstructUsing(c => new RegisterNewDiscMusicCommand(c.Name, c.IdGender, c.Price));
-            CreateMap<DiscMusicViewModel, UpdateDiscMusicCommand>().ConstructUsing(c => new UpdateDiscMusicCommand(c.Id, c.IdGender, c.Name, c.Price));
-
             CreateMap<SalesViewModel, RegisterNewSalesCommand>().ConstructUsing(c => new RegisterNewSalesCommand(c.SalesLines.ToList().ConvertAll(x => 
                                                                                                                                                     new LineCommand(
                                                                                                                                                                 x.IdDisc,

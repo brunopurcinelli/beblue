@@ -2,16 +2,18 @@
 using BeBlueApi.Infra.CrossCutting.Identity.Data;
 using BeBlueApi.Infra.CrossCutting.Identity.Models;
 using BeBlueApi.Infra.Data.Context;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SpotifyAPI.Web;
+using SpotifyAPI.Web.Auth;
+using SpotifyAPI.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BeBlueApi.Infra.Data.Helpers
@@ -47,37 +49,9 @@ namespace BeBlueApi.Infra.Data.Helpers
                 var context = scope.ServiceProvider.GetRequiredService<BeblueDbContext>();
                 context.Database.Migrate();
                 await EnsureSeedContextData(context);
-
             }
         }
-        public static async Task EnsureSeedData(IApplicationBuilder applicationBuilder)
-        {
-            using (var serviceScope = applicationBuilder.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                AppDbContext context = serviceScope.ServiceProvider.GetService<ISpotifyApiService>();
 
-                if (!context.Products.Any())
-                {
-                    // Seed Here
-                }
-
-                context.SaveChanges();
-            }
-
-            using (var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                var appContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                appContext.Database.Migrate();
-
-                var eventContext = scope.ServiceProvider.GetRequiredService<EventStoreSQLContext>();
-                eventContext.Database.Migrate();
-
-                var context = scope.ServiceProvider.GetRequiredService<BeblueDbContext>();
-                context.Database.Migrate();
-                await EnsureSeedContextData(context);
-
-            }
-        }
         /// <summary>
         /// Generate default clients, identity and api resources
         /// </summary>
@@ -101,12 +75,13 @@ namespace BeBlueApi.Infra.Data.Helpers
         /// </summary>
         private static async Task EnsureSeedContextData(BeblueDbContext context)
         {
-            if (!context.MusicGender.Any() && !context.Cashback.Any())
+            foreach (var musicGender in EnsureSeedMusicGenderData())
             {
-                foreach (var musicGender in EnsureSeedMusicGenderData())
-                {
+                if (!context.MusicGender.Any())
                     await context.MusicGender.AddAsync(musicGender);
 
+                if (!context.Cashback.Any())
+                {
                     for (int i = 0; i < 7; i++)
                     {
                         var DayOfWeek = (DayOfWeek)i;
@@ -187,18 +162,76 @@ namespace BeBlueApi.Infra.Data.Helpers
                                 break;
                         }
 
+
+
+
+
                         #endregion
                         await context.Cashback.AddAsync(new Cashback(new Guid(), musicGender.Id, DayOfWeek, percent));
                     }
+                }
 
-                    for (int i = 0; i < 20; i++)
+                if (!context.DiscMusic.Any())
+                {
+                    var listDisc = new List<DiscMusic>();
+                    switch (musicGender.Description)
                     {
-                        await context.DiscMusic.AddAsync(new DiscMusic(new Guid(), i.ToString(), musicGender.Id, 10));
+                        case "CLASSIC":
+                            listDisc = await LoadAlbunsBySpotify(musicGender, "classical");
+                            listDisc.ForEach(e => context.DiscMusic.AddAsync(e));
+                            break;
+                        case "MPB":
+                            listDisc = await LoadAlbunsBySpotify(musicGender, "brazilian");
+                            listDisc.ForEach(e => context.DiscMusic.AddAsync(e));
+                            break;
+                        case "POP":
+                            listDisc = await LoadAlbunsBySpotify(musicGender, "pop");
+                            listDisc.ForEach(e => context.DiscMusic.AddAsync(e));
+                            break;
+                        case "ROCK":
+                            listDisc = await LoadAlbunsBySpotify(musicGender, "rock");
+                            listDisc.ForEach(e => context.DiscMusic.AddAsync(e));
+                            break;
                     }
                 }
             }
 
             await context.SaveChangesAsync();
+        }
+
+        private static async Task<List<DiscMusic>> LoadAlbunsBySpotify(MusicGender musicGender, string gender)
+        {
+            var listDisc = new List<DiscMusic>();
+            var _spotify = await ConnectSpotifyApi();
+
+            var list = await _spotify.GetCategoryPlaylistsAsync(gender, "BR");
+            //var listCategories = await _spotify.GetCategoriesAsync("BR", "", 50);
+
+            foreach (var item in list.Playlists.Items)
+            {
+                FullPlaylist playlist = _spotify.GetPlaylist("", item.Id);
+                var listTracks = playlist.Tracks.Items;
+
+                foreach (var track in listTracks)
+                {
+                    Random random = new Random();
+                    var price = random.NextDouble() * (150.89 - 10.49) + 10.49;
+
+                    listDisc.Add(new DiscMusic(new Guid(),
+                                                track.Track.Album.Name,
+                                                musicGender.Id,
+                                                track.Track.Album.Id,
+                                                track.Track.Artists.FirstOrDefault().Name,
+                                                track.Track.Album.AlbumGroup,
+                                                Convert.ToDecimal(price)));
+                    if (listDisc.Count > 49)
+                    {
+                        return listDisc;
+                    }
+                }
+            }
+
+            return listDisc;
         }
 
         private static ICollection<MusicGender> EnsureSeedMusicGenderData()
@@ -213,5 +246,54 @@ namespace BeBlueApi.Infra.Data.Helpers
             return records;
         }
 
+        private static async Task<SpotifyWebAPI> ConnectSpotifyApi()
+        {
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            CredentialsAuth auth = new CredentialsAuth(config.GetSection("SpotifyApi:ClientId").Value, config.GetSection("SpotifyApi:ClientSecret").Value);
+            Token token = await auth.GetToken();
+            var _spotify = new SpotifyWebAPI() { TokenType = token.TokenType, AccessToken = token.AccessToken };
+
+            //var listCategories = _spotify.GetCategories();
+            //var list = _spotify.GetAlbumTracks()
+
+            //foreach (var item in listCategories.Categories.Items)
+            //{
+            //    Console.WriteLine(item.Name);
+            //}
+
+            return _spotify;
+        }
+        private static async Task<SpotifyWebAPI> AuthSpotifyApi()
+        {
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            AuthorizationCodeAuth auth =
+                new AuthorizationCodeAuth(
+                        config.GetSection("SpotifyApi:ClientId").Value,
+                        config.GetSection("SpotifyApi:ClientSecret").Value,
+                        "http://localhost:6410",
+                        "http://localhost:6410",
+                        SpotifyAPI.Web.Enums.Scope.PlaylistReadCollaborative);
+
+            auth.AuthReceived += async (sender, payload) =>
+            {
+                auth.Stop();
+                Token token = await auth.ExchangeCode(payload.Code);
+                _spotifyWeb = new SpotifyWebAPI() { TokenType = token.TokenType, AccessToken = token.AccessToken };
+                // Do requests with API client
+            };
+            auth.Start(); // Starts an internal HTTP Server
+            auth.OpenBrowser();
+
+            return _spotifyWeb;
+        }
+        private static SpotifyWebAPI _spotifyWeb;
     }
 }

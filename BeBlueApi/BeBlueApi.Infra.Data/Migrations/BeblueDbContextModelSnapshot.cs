@@ -42,7 +42,13 @@ namespace BeBlueApi.Infra.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("AlbumGroup");
+
+                    b.Property<string>("ArtistName");
+
                     b.Property<Guid>("IdGender");
+
+                    b.Property<string>("IdSpotify");
 
                     b.Property<string>("Name")
                         .IsRequired()

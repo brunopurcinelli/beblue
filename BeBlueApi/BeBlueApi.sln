@@ -15,8 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.1-Data", "4.1-Data", "{1E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.2-CrossCutting", "4.2-CrossCutting", "{4802C59D-349D-48A7-BDB9-32356F8B27AA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0-Presentation", "0-Presentation", "{9E146FF2-0A91-4C2C-98C2-DCA1CB2A9909}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeBlueApi.Infra.Data", "BeBlueApi.Infra.Data\BeBlueApi.Infra.Data.csproj", "{5F742B19-1A9D-46DC-BFC7-97399325D9E0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeBlueApi.Infra.CrossCutting.Identity", "BeBlueApi.Infra.CrossCutting.Identity\BeBlueApi.Infra.CrossCutting.Identity.csproj", "{6332DAE3-DA47-4EF2-8169-D6A2155A7258}"
@@ -25,13 +23,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeBlueApi.Infra.CrossCuttin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeBlueApi.Domain", "BeBlueApi.Domain\BeBlueApi.Domain.csproj", "{A2DE7D58-AD02-489D-A182-B18A85188B6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeblueApi.Domain.Core", "BeblueApi.Domain.Core\BeblueApi.Domain.Core.csproj", "{C841347C-5C15-47C8-B47C-865F7ADE9A45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeblueApi.Domain.Core", "BeblueApi.Domain.Core\BeblueApi.Domain.Core.csproj", "{C841347C-5C15-47C8-B47C-865F7ADE9A45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeblueApi.Infra.CrossCutting.Bus", "BeblueApi.Infra.CrossCutting.Bus\BeblueApi.Infra.CrossCutting.Bus.csproj", "{5977FB50-4F54-4421-A108-9E249AE69DE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeblueApi.Infra.CrossCutting.Bus", "BeblueApi.Infra.CrossCutting.Bus\BeblueApi.Infra.CrossCutting.Bus.csproj", "{5977FB50-4F54-4421-A108-9E249AE69DE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeBlueApi.Application", "BeBlueApi.Application\BeBlueApi.Application.csproj", "{315C4FE6-5548-4DC4-A2D1-D4FC0381F3BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeBlueApi.Application", "BeBlueApi.Application\BeBlueApi.Application.csproj", "{315C4FE6-5548-4DC4-A2D1-D4FC0381F3BA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeBlueApi.WebApi", "BeBlueApi.WebApi\BeBlueApi.WebApi.csproj", "{B8FDB1F9-7FC4-495E-B919-C59C44A639A2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5-Tests", "5-Tests", "{53F7DDB5-A0CF-49A3-9610-8CE5F19157A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeBlueApi.Tests", "BeBlueApi.Tests\BeBlueApi.Tests.csproj", "{D1A6FD16-2ADF-43B7-9425-52F744F660B4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker Items", "Docker Items", "{6C45E17F-D4D5-4D2D-95EB-640CAFDF3F02}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		Dockerfile = Dockerfile
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +79,10 @@ Global
 		{B8FDB1F9-7FC4-495E-B919-C59C44A639A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8FDB1F9-7FC4-495E-B919-C59C44A639A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8FDB1F9-7FC4-495E-B919-C59C44A639A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1A6FD16-2ADF-43B7-9425-52F744F660B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1A6FD16-2ADF-43B7-9425-52F744F660B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1A6FD16-2ADF-43B7-9425-52F744F660B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1A6FD16-2ADF-43B7-9425-52F744F660B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +98,7 @@ Global
 		{5977FB50-4F54-4421-A108-9E249AE69DE1} = {4802C59D-349D-48A7-BDB9-32356F8B27AA}
 		{315C4FE6-5548-4DC4-A2D1-D4FC0381F3BA} = {F1E24339-588B-4BD3-ABD6-3C0FB0999835}
 		{B8FDB1F9-7FC4-495E-B919-C59C44A639A2} = {26133913-B8B0-4050-A057-1D45DFEFF2B1}
+		{D1A6FD16-2ADF-43B7-9425-52F744F660B4} = {53F7DDB5-A0CF-49A3-9610-8CE5F19157A8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AF8DD955-47DB-431B-9F2A-376D203342CC}

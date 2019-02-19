@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BeBlueApi.Infra.Data.Migrations
 {
-    public partial class initial : Migration
+    public partial class InitialBeblue : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -59,6 +59,9 @@ namespace BeBlueApi.Infra.Data.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(maxLength: 250, nullable: false),
+                    IdSpotify = table.Column<string>(nullable: true),
+                    ArtistName = table.Column<string>(nullable: true),
+                    AlbumGroup = table.Column<string>(nullable: true),
                     IdGender = table.Column<Guid>(nullable: false),
                     Price = table.Column<decimal>(nullable: false)
                 },

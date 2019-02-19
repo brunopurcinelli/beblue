@@ -24,6 +24,6 @@ namespace BeBlueApi.Domain.Models
         public decimal TotalCashback { get;  set; }
 
 
-        public ICollection<SalesLine> Lines { get; set; }
+        public List<SalesLine> Lines { get; set; }
     }
 }

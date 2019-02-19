@@ -13,22 +13,19 @@ namespace BeBlueApi.Application.Services
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<SpotifyApiService> _logger;
-        private readonly ISpotifyApiService _spotifyApi;
 
         public SpotifyApiService(IHttpClientFactory httpClientFactory,
-                                ISpotifyApiService spotifyApi,
                                 ILogger<SpotifyApiService> logger)
         {
             _httpClientFactory = httpClientFactory;
             _logger = logger;
-            _spotifyApi = spotifyApi;
         }
 
         public async Task<bool> ConnectSpotifyApi()
         {            
             try
             {
-                using (var client = _httpClientFactory.CreateClient("Spotify_API"))
+                using (var client = _httpClientFactory.CreateClient("Spotify_Auth"))
                 {
                     var response = await client.GetAsync(client.BaseAddress);
 
@@ -38,15 +35,16 @@ namespace BeBlueApi.Application.Services
                     {
                         string content = await response.Content.ReadAsStringAsync();
 
-                    //    var resultApi = JsonConvert.DeserializeObject<RequestResult>(content);
+                        //    var resultApi = JsonConvert.DeserializeObject<RequestResult>(content);
 
-                    //    if (resultApi.Data != null)
-                    //    {
-                    //        result.Data = JsonConvert.DeserializeObject<List<MoedaResult>>(resultApi.Data.ToString());
-                    //    }
+                        //    if (resultApi.Data != null)
+                        //    {
+                        //        result.Data = JsonConvert.DeserializeObject<List<MoedaResult>>(resultApi.Data.ToString());
+                        //    }
 
-                    //    result.Messages = resultApi.Messages;
-                    //    result.Status = resultApi.Status;
+                        //    result.Messages = resultApi.Messages;
+                        //    result.Status = resultApi.Status;
+                        return true;
                     }
                 }
                 return false;
@@ -54,10 +52,8 @@ namespace BeBlueApi.Application.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return false;
-            //    _logger.LogError(LoggingEvents.GET_ENTITY, ex, _localizer["UnexpectedError"]);
-            //    result.Status = StatusResult.Danger;
-            //    result.Messages.Add(new Message(string.Format(_localizer["UnexpectedError"], LoggingEvents.GET_ENTITY)));
             }
         } 
     }

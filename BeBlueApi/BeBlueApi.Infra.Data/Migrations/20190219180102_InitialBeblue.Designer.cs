@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeBlueApi.Infra.Data.Migrations
 {
     [DbContext(typeof(BeblueDbContext))]
-    [Migration("20190218174146_initial")]
-    partial class initial
+    [Migration("20190219180102_InitialBeblue")]
+    partial class InitialBeblue
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,7 +44,13 @@ namespace BeBlueApi.Infra.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("AlbumGroup");
+
+                    b.Property<string>("ArtistName");
+
                     b.Property<Guid>("IdGender");
+
+                    b.Property<string>("IdSpotify");
 
                     b.Property<string>("Name")
                         .IsRequired()

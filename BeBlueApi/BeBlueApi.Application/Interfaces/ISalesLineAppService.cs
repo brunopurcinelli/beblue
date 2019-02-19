@@ -9,6 +9,7 @@ namespace BeBlueApi.Application.Interfaces
         void Register(SalesLineViewModel salesLineViewModel);
         IEnumerable<SalesLineViewModel> GetAll();
         SalesLineViewModel GetById(Guid id);
+        List<SalesLineViewModel> GetBySalesId(Guid id);
         void Update(SalesLineViewModel salesLineViewModel);
         void Remove(Guid id);
     }

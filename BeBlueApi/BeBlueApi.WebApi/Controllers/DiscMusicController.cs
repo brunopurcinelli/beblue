@@ -1,15 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BeblueApi.Domain.Core.Bus;
+﻿using BeblueApi.Domain.Core.Bus;
 using BeblueApi.Domain.Core.Notifications;
 using BeBlueApi.Application.Interfaces;
 using BeBlueApi.Application.ViewModels;
+using FluentSpotifyApi;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using SpotifyAPI.Web; //Base Namespace
+using SpotifyAPI.Web.Auth; //All Authentication-related classes
+using SpotifyAPI.Web.Enums; //Enums
+using SpotifyAPI.Web.Models; //Models for the JSON-responses
 
 namespace BeBlueApi.WebApi.Controllers
 {
@@ -21,12 +24,13 @@ namespace BeBlueApi.WebApi.Controllers
 
         public DiscMusicController(
             IDiscMusicAppService appService,
-            INotificationHandler<DomainNotification> notifications, 
+            INotificationHandler<DomainNotification> notifications,
             IMediatorHandler mediator) : base(notifications, mediator)
         {
+
             _appService = appService;
         }
-        
+
         [HttpGet]
         [AllowAnonymous]
         [Route("disc-music/{page:int}/{size:int}")]
@@ -59,4 +63,4 @@ namespace BeBlueApi.WebApi.Controllers
             });
         }
     }
-} 
+}

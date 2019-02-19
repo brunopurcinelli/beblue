@@ -62,5 +62,10 @@ namespace BeBlueApi.Application.Services
         {
             GC.SuppressFinalize(this);
         }
+
+        public List<SalesLineViewModel> GetBySalesId(Guid id)
+        {
+            return _mapper.Map<List<SalesLineViewModel>>(_repository.GetBySalesId(id));
+        }
     }
 }

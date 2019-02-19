@@ -31,10 +31,21 @@ namespace BeBlueApi.WebApi.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("sales/{page:int}/{size:int}/{dateInitial:datetime}/{dateFinal:datetime}")]
+        [Route("sales/{page:int}/{size:int}/{dateInitial}/{dateFinal}")]
         public IActionResult Get(int page, int size, DateTime dateInitial, DateTime dateFinal)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             var response = _appService.GetAll(page, size, dateInitial, dateFinal);
+            foreach (var item in response)
+            {
+                item.SalesLines = new List<SalesLineViewModel>();
+                _appLineService.GetBySalesId(item.Id).ForEach(e => item.SalesLines.Add(e));
+            }
+
             return Ok(new SelfResponse
             {
                 Href = $"api/v1/sales/{page}/{size}/{dateInitial}/{dateFinal}",
@@ -81,32 +92,6 @@ namespace BeBlueApi.WebApi.Controllers
                 Size = 1,
                 Value = salesViewModel
             });
-        }
-
-        [HttpPut]
-        [Authorize(Policy = "CanWriteSalesData")]
-        [Route("sales")]
-        public IActionResult Put([FromBody]SalesViewModel salesViewModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                NotifyModelStateErrors();
-                return Response(salesViewModel);
-            }
-
-            _appService.Update(salesViewModel);
-
-            return Response(salesViewModel);
-        }
-
-        [HttpDelete]
-        [Authorize(Policy = "CanRemoveSalesData")]
-        [Route("sales")]
-        public IActionResult Delete(Guid id)
-        {
-            _appService.Remove(id);
-
-            return Response();
         }
     }
 }

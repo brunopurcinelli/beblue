@@ -67,7 +67,7 @@ namespace BeBlueApi.Domain.CommandHandlers
                 totalAmount += salesPrice;
                 totalCashback += cashbackAmount;
 
-                Sales.Lines.Add(new SalesLine(Guid.NewGuid(), Sales.Id, item.IdDisc, disc.Name, item.Quantity, item.PriceUnit, salesPrice, cashbackAmount));
+                Sales.Lines.Add(new SalesLine(Guid.NewGuid(), Sales.Id, item.IdDisc, disc.Name, item.Quantity, disc.Price, salesPrice, cashbackAmount));
             }
 
             Sales.TotalAmount = totalAmount;
